@@ -93,7 +93,7 @@ for i in range(len(time)):
         else:
             end_time[gas_station] = count_time(end_time[gas_station], howlong[i])
 
-        # client_data = f'{time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} {gas_station}'
+        # client_data = f'{time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} {gas_station} {end_time[gas_station]}'
         print(f'В {time[i]} новый клиент:  {time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} '
               f'встал в очередь к автомату №{gas_station}')
         for col, m in max_queue.items():
