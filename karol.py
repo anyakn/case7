@@ -130,3 +130,7 @@ def time(line, minute):
     return hours + ':' + minutes
 
 print(time('23:59', 1))
+
+
+print(current_queue)
+print('12:36' > '13:05')
