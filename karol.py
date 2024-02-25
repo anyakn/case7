@@ -111,7 +111,10 @@ print('в общем не продав', gas_lost, 'литров бензина'
 def time(line, minute):
     hours, minutes = line.split(':')
     hours, minutes = int(hours), int(minutes)
-    if minutes + minute >= 60:
+    if hours == 23 and minutes + minute >= 60:
+        hours = 0
+        minutes = (minutes + minute) % 60
+    elif minutes + minute >= 60:
         hours += minute//60 + 1
         minutes = (minutes + minute) % 60
     else:
@@ -126,4 +129,4 @@ def time(line, minute):
         hours = str(hours)
     return hours + ':' + minutes
 
-print(time('00:59', 1))
+print(time('23:59', 1))
