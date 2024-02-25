@@ -5,10 +5,10 @@ with open('start.txt', encoding='utf-8') as f_in:
     current_queue = {}
     end_time = {}
     while line:
-        column[line[0]] = line[2:]
-        max_queue[line[0]] = line[1]
-        current_queue[line[0]] = 0
-        end_time[line[0]] = 0
+        column[int(line[0])] = line[2:]
+        max_queue[int(line[0])] = int(line[1])
+        current_queue[int(line[0])] = 0
+        end_time[int(line[0])] = 0
         line = f_in.readline().strip().split()
 
 
@@ -49,8 +49,16 @@ print(gas_type)
 for i in range(len(time)):
 
     min_gas = float('inf')
+    gas_station = 0
     for col, gas in column.items():
         if gas_type[i] in gas:
-            if current_queue[col] < min_gas:
+            if current_queue[col] < max_queue[col] and current_queue[col] < min_gas:
                 min_gas = current_queue[col]
+                gas_station = col
+
+    # gas_station нашли в какую колонку поедет заправляться машина
+    if gas_station != 0:
+        current_queue[gas_station] += 1
+
+
 
