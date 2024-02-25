@@ -11,17 +11,19 @@ with open('input.txt', encoding='utf-8') as f:
         line = f.readline().strip()
         line = line.split()
 
-
-"""print(time)
-print('')
-print(howmuch)
-print('')
-print(type)"""
-print('')
-print(howmuch)
 import math
+import random
+
 for i in range(len(howmuch)):
     t = math.ceil(int(howmuch[i]) / 10)
+    if t == 1:
+        t = t + random.randint(0, 1)
+    else:
+        t = t + random.randint(-1, 1)
     howmuch[i] = t
+
+print(time)
 print('')
 print(howmuch)
+print('')
+print(type)
