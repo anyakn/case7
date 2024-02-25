@@ -1,14 +1,38 @@
+def count_time(line, minute):
+    hours, minutes = line.split(':')
+    hours, minutes = int(hours), int(minutes)
+    if hours == 23 and minutes + minute >= 60:
+        hours = 0
+        minutes = (minutes + minute) % 60
+    elif minutes + minute >= 60:
+        hours += minute//60 + 1
+        minutes = (minutes + minute) % 60
+    else:
+        minutes += minute
+    if minutes < 10:
+        minutes = '0' + str(minutes)
+    else:
+        minutes = str(minutes)
+    if hours < 10:
+        hours = '0' + str(hours)
+    else:
+        hours = str(hours)
+    return hours + ':' + minutes
+
+
 with open('start.txt', encoding='utf-8') as f_in:
     line = f_in.readline().strip().split()
     column = {}
     max_queue = {}
     current_queue = {}
     end_time = {}
+    cars = {}
     while line:
         column[int(line[0])] = line[2:]
         max_queue[int(line[0])] = int(line[1])
         current_queue[int(line[0])] = 0
-        end_time[int(line[0])] = 0
+        end_time[int(line[0])] = '00:00'
+        cars[int(line[0])] = []
         line = f_in.readline().strip().split()
 
 
@@ -60,8 +84,15 @@ for i in range(len(time)):
                 gas_station = col
 
     # gas_station нашли в какую колонку поедет заправляться машина
+
     if gas_station != 0:
         current_queue[gas_station] += 1
+
+        if end_time[gas_station] < time[i]:
+            end_time[gas_station] = count_time(time[i], howlong[i])
+        else:
+            end_time[gas_station] = count_time(end_time[gas_station], howlong[i])
+
         # client_data = f'{time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} {gas_station}'
         print(f'В {time[i]} новый клиент:  {time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} '
               f'встал в очередь к автомату №{gas_station}')
@@ -71,5 +102,6 @@ for i in range(len(time)):
             print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
 
     # выводим когда кто то заехал
+
 
 
