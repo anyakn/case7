@@ -102,6 +102,6 @@ for i in range(len(time)):
             print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
 
     # выводим когда кто то заехал
-        cars[gas_station].append([time[i], gas_type[i], howmuch[i], howlong[i], gas_station, end_time[gas_station]])
+        cars[gas_station].extend([time[i], gas_type[i], howmuch[i], howlong[i], gas_station, end_time[gas_station]])
+        print(cars)
 
-    print(cars)

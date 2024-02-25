@@ -1,14 +1,5 @@
-client_left = 0
-gas_lost = 0
-type_of_gas = 0
-money_lost = 0
-
-# Словарь с ценами на бензин
-price = dict.fromkeys(['АИ-80', 'АИ-92', 'АИ-95', 'АИ-98'], 0)
-price['АИ-98'] = 67
-price['АИ-95'] = 52
-price['АИ-92'] = 49
-price['АИ-80'] = 25
+import math
+import random
 
 
 def count_time(line, minute):
@@ -33,6 +24,21 @@ def count_time(line, minute):
     return hours + ':' + minutes
 
 
+client_left = 0
+gas_lost = 0
+type_of_gas = 0
+money_lost = 0
+
+# Словарь с ценами на бензин
+price = dict.fromkeys(['АИ-80', 'АИ-92', 'АИ-95', 'АИ-98'], 0)
+price['АИ-98'] = 67
+price['АИ-95'] = 52
+price['АИ-92'] = 49
+price['АИ-80'] = 25
+
+# Словарь с подсчётам проданых литров
+sold = dict.fromkeys(['АИ-80', 'АИ-92', 'АИ-95', 'АИ-98'], 0)
+
 with open('start.txt', encoding='utf-8') as f_in:
     line = f_in.readline().strip().split()
     column = {}
@@ -48,10 +54,6 @@ with open('start.txt', encoding='utf-8') as f_in:
         cars[int(line[0])] = []
         line = f_in.readline().strip().split()
 
-
-print(column)
-print(max_queue)
-
 with open('input.txt', encoding='utf-8') as f:
     time = []
     howmuch = []
@@ -65,9 +67,6 @@ with open('input.txt', encoding='utf-8') as f:
         line = f.readline().strip()
         line = line.split()
 
-import math
-import random
-
 howlong = []
 for i in range(len(howmuch)):
     t = math.ceil(int(howmuch[i]) / 10)
@@ -77,15 +76,6 @@ for i in range(len(howmuch)):
         t = t + random.randint(-1, 1)
     howlong.append(t)
 
-print(time)
-print('')
-print(howmuch)
-print('')
-print(howlong)
-print('')
-print(gas_type)
-
-
 for i in range(len(time)):
     times_out = []
     for key, values in cars.items():
@@ -93,16 +83,21 @@ for i in range(len(time)):
             if car[-1] < time[i]:
                 times_out.append(car[-1])
     times_out.sort()
-    print(times_out)
 
     for t in times_out:
         for key, values in cars.items():
             for car in values:
                 if car[-1] == t:
                     current_queue[key] -= 1
-
                     x = values.pop(values.index(car))
-                    print('*', x)
+                    final = ''
+                    for s in x[:-2]:
+                        final += str(s) + ' '
+                    print(f'В {t} клиент: {final} заправил свой автомобиль и покинул АЗС.')
+                    for col, m in max_queue.items():
+                        benz_str = ' '.join(column[col])
+                        num = '*' * current_queue[col]
+                        print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
 
     min_gas = float('inf')
     gas_station = 0
@@ -113,15 +108,12 @@ for i in range(len(time)):
                 gas_station = col
 
     # gas_station нашли в какую колонку поедет заправляться машина
-
     if gas_station != 0:
         current_queue[gas_station] += 1
-
         if end_time[gas_station] < time[i]:
             end_time[gas_station] = count_time(time[i], howlong[i])
         else:
             end_time[gas_station] = count_time(end_time[gas_station], howlong[i])
-
         # client_data = f'{time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} {gas_station} {end_time[gas_station]}'
         print(f'В {time[i]} новый клиент:  {time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} '
               f'встал в очередь к автомату №{gas_station}')
@@ -129,21 +121,26 @@ for i in range(len(time)):
             benz_str = ' '.join(column[col])
             num = '*' * current_queue[col]
             print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
+        sold[gas_type[i]] += int(howmuch[i])
 
     # выводим когда кто то заехал
         cars[gas_station].append([time[i], gas_type[i], howmuch[i], howlong[i], gas_station, end_time[gas_station]])
 
-        print(cars)
-
-        # Проверяем, какой тип бензина могли купить, сколько литров и сколько всего клиентов уехали
+    # Проверяем, какой тип бензина могли купить, сколько литров и сколько всего клиентов уехали
     else:
         client_left += 1
         gas_lost += int(howmuch[i])
         money_lost += int(howmuch[i]) * price.get(gas_type[i])
 
-print('По итогам дня, АЗС:')
-print('потеряла', client_left, 'клиентов')
-print('возможную прибыль в размере', money_lost, 'рублей')
-print('в общем не продав', gas_lost, 'литров бензина')
 
-
+with open('output.txt', 'w', encoding='utf-8') as f_out:
+    print('По итогам дня, АЗС:', file=f_out)
+    print('Кол-во литров, проданное за сутки по каждой марке бензина:', file=f_out)
+    overall = 0
+    for key, value in sold.items():
+        print(key, ': ', value, ' литров', sep='', file=f_out)
+        overall += value * price[key]
+    print('Общая сумма продаж за сутки:', overall, 'рублей', file=f_out)
+    print('"Потеряно"', client_left, 'клиентов', file=f_out)
+    print('Упущена возможная прибыль в размере', money_lost, 'рублей', file=f_out)
+    print('Могли продать на', gas_lost, 'литров бензина больше.', file=f_out)
