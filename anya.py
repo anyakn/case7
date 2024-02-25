@@ -62,6 +62,7 @@ for i in range(len(time)):
     # gas_station нашли в какую колонку поедет заправляться машина
     if gas_station != 0:
         current_queue[gas_station] += 1
+        # client_data = f'{time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} {gas_station}'
         print(f'В {time[i]} новый клиент:  {time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} '
               f'встал в очередь к автомату №{gas_station}')
         for col, m in max_queue.items():
@@ -69,5 +70,6 @@ for i in range(len(time)):
             num = '*' * current_queue[col]
             print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
 
+    # выводим когда кто то заехал
 
 
