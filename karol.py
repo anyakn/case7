@@ -108,3 +108,22 @@ print('возможную прибыль в размере', money_lost, 'руб
 print('в общем не продав', gas_lost, 'литров бензина')
 
 
+def time(line, minute):
+    hours, minutes = line.split(':')
+    hours, minutes = int(hours), int(minutes)
+    if minutes + minute >= 60:
+        hours += minute//60 + 1
+        minutes = (minutes + minute) % 60
+    else:
+        minutes += minute
+    if minutes < 10:
+        minutes = '0' + str(minutes)
+    else:
+        minutes = str(minutes)
+    if hours < 10:
+        hours = '0' + str(hours)
+    else:
+        hours = str(hours)
+    return hours + ':' + minutes
+
+print(time('00:59', 1))
