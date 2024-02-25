@@ -31,17 +31,20 @@ with open('input.txt', encoding='utf-8') as f:
 import math
 import random
 
+howlong = []
 for i in range(len(howmuch)):
     t = math.ceil(int(howmuch[i]) / 10)
     if t == 1:
         t = t + random.randint(0, 1)
     else:
         t = t + random.randint(-1, 1)
-    howmuch[i] = t
+    howlong.append(t)
 
 print(time)
 print('')
 print(howmuch)
+print('')
+print(howlong)
 print('')
 print(gas_type)
 
@@ -59,6 +62,12 @@ for i in range(len(time)):
     # gas_station нашли в какую колонку поедет заправляться машина
     if gas_station != 0:
         current_queue[gas_station] += 1
+        print(f'В {time[i]} новый клиент:  {time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} '
+              f'встал в очередь к автомату №{gas_station}')
+        for col, m in max_queue.items():
+            benz_str = ' '.join(column[col])
+            num = '*' * current_queue[col]
+            print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
 
 
 
