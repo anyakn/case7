@@ -38,7 +38,7 @@ price[ru.gas_92] = 49
 price[ru.gas_80] = 25
 
 # Словарь с подсчётам проданых литров
-sold = dict.fromkeys(['АИ-80', 'АИ-92', 'АИ-95', 'АИ-98'], 0)
+sold = dict.fromkeys([ru.gas_80, ru.gas_92, ru.gas_95, ru.gas_98], 0)
 
 with open('start.txt', encoding='utf-8') as f_in:
     line = f_in.readline().strip().split()
@@ -120,7 +120,7 @@ for i in range(len(time)):
         for col, m in max_queue.items():
             benz_str = ' '.join(column[col])
             num = '*' * current_queue[col]
-            print(ru.situation_1,col, ru.situation_2, m, ru.situation_3, benz_str, ru.situation_4+num)
+            print(ru.situation_1, col, ru.situation_2, m, ru.situation_3, benz_str, ru.situation_4+num)
         sold[gas_type[i]] += int(howmuch[i])
 
     # выводим когда кто то заехал
