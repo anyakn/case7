@@ -1,9 +1,10 @@
 import math
 import random
+import ru_local as ru
 
 
-def count_time(line, minute):
-    hours, minutes = line.split(':')
+def count_time(ln, minute):
+    hours, minutes = ln.split(':')
     hours, minutes = int(hours), int(minutes)
     if hours == 23 and minutes + minute >= 60:
         hours = 0
@@ -30,11 +31,11 @@ type_of_gas = 0
 money_lost = 0
 
 # Словарь с ценами на бензин
-price = dict.fromkeys(['АИ-80', 'АИ-92', 'АИ-95', 'АИ-98'], 0)
-price['АИ-98'] = 67
-price['АИ-95'] = 52
-price['АИ-92'] = 49
-price['АИ-80'] = 25
+price = dict.fromkeys([ru.gas_80, ru.gas_92, ru.gas_95, ru.gas_98], 0)
+price[ru.gas_98] = 67
+price[ru.gas_95] = 52
+price[ru.gas_92] = 49
+price[ru.gas_80] = 25
 
 # Словарь с подсчётам проданых литров
 sold = dict.fromkeys(['АИ-80', 'АИ-92', 'АИ-95', 'АИ-98'], 0)
@@ -93,11 +94,11 @@ for i in range(len(time)):
                     final = ''
                     for s in x[:-2]:
                         final += str(s) + ' '
-                    print(f'В {t} клиент: {final} заправил свой автомобиль и покинул АЗС.')
+                    print(ru.out_1, t, ru.out_2, final, ru.out_3)
                     for col, m in max_queue.items():
                         benz_str = ' '.join(column[col])
                         num = '*' * current_queue[col]
-                        print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
+                        print(ru.situation_1, col, ru.situation_2, m, ru.situation_3, benz_str, ru.situation_4+num)
 
     min_gas = float('inf')
     gas_station = 0
@@ -114,13 +115,12 @@ for i in range(len(time)):
             end_time[gas_station] = count_time(time[i], howlong[i])
         else:
             end_time[gas_station] = count_time(end_time[gas_station], howlong[i])
-        # client_data = f'{time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} {gas_station} {end_time[gas_station]}'
-        print(f'В {time[i]} новый клиент:  {time[i]} {gas_type[i]} {howmuch[i]} {howlong[i]} '
-              f'встал в очередь к автомату №{gas_station}')
+        print(ru.in_1, time[i], ru.in_2, time[i], gas_type[i], howmuch[i], howlong[i],
+              ru.in_3, gas_station)
         for col, m in max_queue.items():
             benz_str = ' '.join(column[col])
             num = '*' * current_queue[col]
-            print(f'Автомат №{col} максимальная очередь: {m} Марки бензина {benz_str} ->{num}')
+            print(ru.situation_1,col, ru.situation_2, m, ru.situation_3, benz_str, ru.situation_4+num)
         sold[gas_type[i]] += int(howmuch[i])
 
     # выводим когда кто то заехал
@@ -134,13 +134,13 @@ for i in range(len(time)):
 
 
 with open('output.txt', 'w', encoding='utf-8') as f_out:
-    print('По итогам дня, АЗС:', file=f_out)
-    print('Кол-во литров, проданное за сутки по каждой марке бензина:', file=f_out)
+    print(ru.report_1, file=f_out)
+    print(ru.report_2, file=f_out)
     overall = 0
     for key, value in sold.items():
-        print(key, ': ', value, ' литров', sep='', file=f_out)
+        print(key, ': ', value, ru.report_3, sep='', file=f_out)
         overall += value * price[key]
-    print('Общая сумма продаж за сутки:', overall, 'рублей', file=f_out)
-    print('"Потеряно"', client_left, 'клиентов', file=f_out)
-    print('Упущена возможная прибыль в размере', money_lost, 'рублей', file=f_out)
-    print('Могли продать на', gas_lost, 'литров бензина больше.', file=f_out)
+    print(ru.report_4, overall, ru.report_5, file=f_out)
+    print(ru.report_6, client_left, ru.report_7, file=f_out)
+    print(ru.report_8, money_lost, ru.report_5, file=f_out)
+    print(ru.report_9, gas_lost, ru.report_10, file=f_out)
