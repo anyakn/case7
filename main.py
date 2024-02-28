@@ -139,3 +139,5 @@ with open('output.txt', 'w', encoding='utf-8') as f_out:
     print(ru.report_6, client_left, ru.report_7, file=f_out)
     print(ru.report_8, money_lost, ru.report_5, file=f_out)
     print(ru.report_9, gas_lost, ru.report_10, file=f_out)
+    print('')
+    print(ru.report_11)
