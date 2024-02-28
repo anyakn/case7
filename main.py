@@ -30,14 +30,12 @@ gas_lost = 0
 type_of_gas = 0
 money_lost = 0
 
-# Словарь с ценами на бензин
 price = dict.fromkeys([ru.gas_80, ru.gas_92, ru.gas_95, ru.gas_98], 0)
 price[ru.gas_98] = 67
 price[ru.gas_95] = 52
 price[ru.gas_92] = 49
 price[ru.gas_80] = 25
 
-# Словарь с подсчётам проданых литров
 sold = dict.fromkeys([ru.gas_80, ru.gas_92, ru.gas_95, ru.gas_98], 0)
 
 with open('start.txt', encoding='utf-8') as f_in:
@@ -108,7 +106,6 @@ for i in range(len(time)):
                 min_gas = current_queue[col]
                 gas_station = col
 
-    # gas_station нашли в какую колонку поедет заправляться машина
     if gas_station != 0:
         current_queue[gas_station] += 1
         if end_time[gas_station] < time[i]:
@@ -123,10 +120,8 @@ for i in range(len(time)):
             print(ru.situation_1, col, ru.situation_2, m, ru.situation_3, benz_str, ru.situation_4+num)
         sold[gas_type[i]] += int(howmuch[i])
 
-    # выводим когда кто то заехал
         cars[gas_station].append([time[i], gas_type[i], howmuch[i], howlong[i], gas_station, end_time[gas_station]])
 
-    # Проверяем, какой тип бензина могли купить, сколько литров и сколько всего клиентов уехали
     else:
         client_left += 1
         gas_lost += int(howmuch[i])
